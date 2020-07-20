@@ -1,2 +1,2 @@
 # NWAPW-Chatbot
-A chatbot made from the NWAPW.
+A chatbot made from the NWAPW worshop.
