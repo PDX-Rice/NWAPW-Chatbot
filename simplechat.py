@@ -1,5 +1,6 @@
 Greetings = ["Hello", "hello", "hey", "Hey", "Hi", "hi", "yo", "Yo"]
 Endings = ["Bye", "bye", "goodbye", "Goodbye", "See ya", "see ya", "c ya", "end", "End"]
+Yes = ["yes", "Yes", "Y", "y"]
 loop = True
 
 
@@ -27,5 +28,7 @@ while loop:
     else:
         print("Could you say something simpler please?")
         print("If you want to stop chatting please say and ending word")
+
+
 
 
