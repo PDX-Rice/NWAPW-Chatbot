@@ -1,6 +1,6 @@
 Greetings = ["Hello", "hello", "hey", "Hey", "Hi", "hi", "yo", "Yo"]
 Endings = ["Bye", "bye", "goodbye", "Goodbye", "See ya", "see ya", "c ya", "end", "End"]
-loop = 0
+loop = True
 
 
 print("My current greetings are: " + str(Greetings))
@@ -14,13 +14,13 @@ if input("Would you like to add a greeting or an ending word? (Y/N): ") == "Y" o
 
 print("\n")
 
-while loop == 0:
+while loop:
     say = input("YO : ")
 
     if say in Greetings:
         print("Hey there thanks for the greeting")
     elif say in Endings:
-        loop = 1
+        loop = False
         print("Good talk, see ya next time")
     else:
         print("Could you say something simpler please?")
