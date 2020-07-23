@@ -1,6 +1,7 @@
 Greetings = ["Hello", "hello", "hey", "Hey", "Hi", "hi", "yo", "Yo"]
 Endings = ["Bye", "bye", "goodbye", "Goodbye", "See ya", "see ya", "c ya", "end", "End"]
 Yes = ["yes", "Yes", "Y", "y"]
+No = ["No", "no", "n", "N"]
 loop = True
 
 
@@ -8,12 +9,14 @@ print("My current greetings are: " + str(Greetings))
 print("My current ending words are: " + str(Endings))
 print("\n")
 
-if input("Would you like to add a greeting or an ending word? (Y/N): ") == "Y":
-        say = input("Greeting or ending? (G/E): ")
-        if say == "G":
-            Greetings.append(input("What greeting word would you like to add: "))
-        elif say == "E":
-            Endings.append(input("What ending word would you like to add: "))
+say = input("Would you like to add a greeting or an ending word? (Y/N): ")
+
+if say in Yes:
+    say = input("Greeting or ending? (G/E): ")
+    if say == "G":
+        Greetings.append(input("What greeting word would you like to add: "))
+    elif say == "E":
+        Endings.append(input("What ending word would you like to add: "))
 
 print("\n")
 
