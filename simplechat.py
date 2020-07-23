@@ -6,11 +6,13 @@ loop = True
 print("My current greetings are: " + str(Greetings))
 print("My current ending words are: " + str(Endings))
 print("\n")
-if input("Would you like to add a greeting or an ending word? (Y/N): ") == "Y" or "y":
-    if input("Greeting or ending? (G/E): ") == "G":
-        Greetings.append(input("What greeting word would you like to add: "))
-    else:
-        Endings.append(input("What ending word would you like to add: "))
+
+if input("Would you like to add a greeting or an ending word? (Y/N): ") == "Y":
+        say = input("Greeting or ending? (G/E): ")
+        if say == "G":
+            Greetings.append(input("What greeting word would you like to add: "))
+        elif say == "E":
+            Endings.append(input("What ending word would you like to add: "))
 
 print("\n")
 
@@ -24,6 +26,6 @@ while loop:
         print("Good talk, see ya next time")
     else:
         print("Could you say something simpler please?")
-        print("If you want to stop chatting please say end")
+        print("If you want to stop chatting please say and ending word")
 
 
