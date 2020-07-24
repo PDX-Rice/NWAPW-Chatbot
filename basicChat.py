@@ -63,7 +63,8 @@ while running == True:
         question = input("would you like to register this phrase? yes or no: ")
         #if user wants to register phrase, they categorize the phrase as a positive or negative statement
         if question in yes:
-            posOrNeg = input("is this a positive or negative phrase? ")
+            posOrNeg = input("is this a posi"
+                             "tive or negative phrase? ")
             #if phrase is positive, add it to list of positive phrases
             if posOrNeg in pos:
                 register(positive,phrase)
