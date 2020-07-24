@@ -1,9 +1,11 @@
+import random
+
 Greetings = ["Hello", "hello", "hey", "Hey", "Hi", "hi", "yo", "Yo"]
+Greetingsresponse = ["Hey there", "Hey", "Thanks for the greeting", "Don't forget to say an ending work to end the chat"]
 Endings = ["Bye", "bye", "goodbye", "Goodbye", "See ya", "see ya", "c ya", "end", "End"]
 Yes = ["yes", "Yes", "Y", "y"]
 No = ["No", "no", "n", "N"]
 loop = True
-
 
 print("My current greetings are: " + str(Greetings))
 print("My current ending words are: " + str(Endings))
@@ -21,10 +23,10 @@ if say in Yes:
 print("\n")
 
 while loop:
-    say = input("YO : ")
+    say = input(Greetings[random.randint(0, 7)].title() + ": ")
 
     if say in Greetings:
-        print("Hey there thanks for the greeting")
+        print(Greetingsresponse [random.randint(0, 3)])
     elif say in Endings:
         loop = False
         print("Good talk, see ya next time")
