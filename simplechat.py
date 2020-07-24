@@ -23,10 +23,10 @@ if say in Yes:
 print("\n")
 
 while loop:
-    say = input(Greetings[random.randint(0, 7)].title() + ": ")
+    say = input(random.choice(Greetings).title() + ": ")
 
     if say in Greetings:
-        print(Greetingsresponse [random.randint(0, 3)])
+        print(random.choice(Greetingsresponse))
     elif say in Endings:
         loop = False
         print("Good talk, see ya next time")
