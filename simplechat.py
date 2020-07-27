@@ -34,8 +34,6 @@ while loop:
         print("Could you say something simpler please?")
         print("If you want to stop chatting please say and ending word")
 
-    #yes this is only a comment
-
 
 
 
