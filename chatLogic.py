@@ -1,23 +1,27 @@
 import json
-import random
+from spellchecker import SpellChecker
+
+# Sets up spellchecker
+spell = SpellChecker()
 
 # Input knowledge arrays
-wordData = []
 with open('wordData.json') as json_file:
     wordData = json.load(json_file)
 
 
-def findWordDef(wrd, data):
+# Searches knowledge arrays for word and returns logged meaning tag
+def findworddef(wrd, data):
     means = ''
     for x in range(len(data)):
-        if wrd in wordData[x][0]:
+        if wrd == wordData[x][0]:
             means = wordData[x][1]
             break
 
     return means
 
 
-def defineWord(data):
+# Adds a new word to knowledge arrays and saves the addition to JSON file
+def defineword(data):
     yesno = input("I didn't recognize an adjective in your response,"
                   " would you like to add a word to my knowledgebase?: ").lower()
     if yesno == 'yes':
@@ -36,9 +40,10 @@ while running:
     understands = False
     phrase = input("How are you doing?: ").lower().split()
     for word in phrase:
-        meaning = findWordDef(word, wordData)
+        word = spell.correction(word)
+        meaning = findworddef(word, wordData)
         if meaning != '':
             understands = True
             print(word + " = " + meaning)
     if not understands:
-        defineWord(wordData)
+        defineword(wordData)
