@@ -19,10 +19,10 @@ def findWordDef(wrd, data):
 
 def defineWord(data):
     yesno = input("I didn't recognize an adjective in your response,"
-                  " would you like to add a word to my knowledgebase?").lower()
+                  " would you like to add a word to my knowledgebase?: ").lower()
     if yesno == 'yes':
-        wrd = input("What word would you like to define?").lower()
-        means = input("Is that word positive or negative?").lower()
+        wrd = input("What word would you like to define?: ").lower()
+        means = input("Is that word positive or negative?: ").lower()
         wordData.append([wrd, means])
         with open('wordData.json', 'w') as outfile:
             json.dump(data, outfile, indent=4)
@@ -34,7 +34,7 @@ def defineWord(data):
 running = True
 while running:
     understands = False
-    phrase = input("How are you doing?").lower().split()
+    phrase = input("How are you doing?: ").lower().split()
     for word in phrase:
         meaning = findWordDef(word, wordData)
         if meaning != '':
