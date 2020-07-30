@@ -66,5 +66,9 @@
     [
         "ok",
         "neutral"
+    ],
+    [
+        "good",
+        "positive"
     ]
 ]
