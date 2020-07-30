@@ -62,5 +62,25 @@
     [
         "upset",
         "negative"
+    ],
+    [
+        "bye",
+        "ending"
+    ],
+    [
+        "goodbye",
+        "ending"
+    ],
+    [
+        "fairwell",
+        "ending"
+    ],
+    [
+        "fair well",
+        "ending"
+    ],
+    [
+        "fair-well",
+        "ending"
     ]
 ]
