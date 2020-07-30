@@ -64,11 +64,23 @@
         "negative"
     ],
     [
-        "ok",
-        "neutral"
+        "bye",
+        "ending"
     ],
     [
-        "good",
-        "positive"
+        "goodbye",
+        "ending"
+    ],
+    [
+        "fairwell",
+        "ending"
+    ],
+    [
+        "fair well",
+        "ending"
+    ],
+    [
+        "fair-well",
+        "ending"
     ]
 ]
