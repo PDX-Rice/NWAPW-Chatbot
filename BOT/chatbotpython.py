@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import random
 
 load_dotenv()
-TOKEN = 'TOKEN'
+TOKEN = 'TOUR TOKEN HERE'
 client = commands.Bot(command_prefix='-')
 
 
@@ -33,6 +33,11 @@ async def on_message(message):
 
     if message.content.startswith('hello'):
         await message.channel.send(random.choice(greetings).title())
+
+@client.command()
+async def prefix(ctx, pre):
+    client = commands.Bot(command_prefix= pre)
+    await ctx.send('Successfully changed the prefix to "' + pre + '"')
 
 
 @client.command()
