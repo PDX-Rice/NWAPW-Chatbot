@@ -23,6 +23,17 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'(member) has left the server.')
 
+@client.event
+async def on_message(message):
+    greetings = ["hey!", "hi!",
+                 "hello!", "yo!",
+                 "wassup!", ]
+    if message.author == client.user:
+        return
+
+    if message.content.startswith('hello'):
+        await message.channel.send(f'[random.choice(greetings)].title')
+
 
 @client.command()
 async def ping(ctx):
