@@ -32,7 +32,7 @@ async def on_message(message):
         return
 
     if message.content.startswith('hello'):
-        await message.channel.send([random.choice(greetings)].title())
+        await message.channel.send(random.choice(greetings).title())
 
 
 @client.command()
