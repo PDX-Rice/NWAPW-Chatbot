@@ -1,10 +1,12 @@
 import os
 import discord
 from discord.ext import commands
+#from dotenv import load_dotenv [for when we use gitignore]
 import random
 
-load_dotenv()
-TOKEN = 'TOUR TOKEN HERE'
+
+#load_dotenv() [for when we use gitignore]
+TOKEN = 'INSERT TOKEN HERE'
 client = commands.Bot(command_prefix='-')
 
 
@@ -22,6 +24,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} has left the server.')
 
+
 @client.event
 async def on_message(message):
     greetings = ["hey!", "hi!",
@@ -33,10 +36,11 @@ async def on_message(message):
     if message.content.startswith('hello'):
         await message.channel.send(random.choice(greetings).title())
 
+
 @client.command()
 async def prefix(ctx, pre):
-    client = commands.Bot(command_prefix= pre)
-    await ctx.send('Successfully changed the prefix to "' + pre + '"')
+    #client = commands.Bot(command_prefix= pre)
+    await ctx.send('Successfully changed the prefix to "' + pre + '"') #doesn't change the prefix yet, just the message for now
 
 
 @client.command()
