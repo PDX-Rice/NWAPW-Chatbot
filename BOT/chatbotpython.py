@@ -6,8 +6,8 @@ import random
 
 
 #load_dotenv() [for when we use gitignore]
-TOKEN = 'INSERT TOKEN HERE'
-client = commands.Bot(command_prefix='-')
+TOKEN = 'Insert Token here'
+client = commands.Bot(command_prefix = '-')
 
 
 @client.event
@@ -25,22 +25,28 @@ async def on_member_remove(member):
     print(f'{member} has left the server.')
 
 
-@client.event
-async def on_message(message):
-    greetings = ["hey!", "hi!",
-                 "hello!", "yo!",
-                 "wassup!", ]
-    if message.author == client.user:
-        return
+@client.command()
+async def load(ctx, extension):
+    client.load_extension(f'cogs.{extension}')
+    await ctx.send('File "' + extension + '" loaded')
 
-    if message.content.startswith('hello'):
-        await message.channel.send(random.choice(greetings).title())
+
+@client.command()
+async def unload(ctx, extension):
+    client.unload_extension(f'cogs.{extension}')
+    await ctx.send('File "' + extension + '" unloaded')
+
+@client.command()
+async def reload(ctx, extension):
+    client.unload_extension(f'cogs.{extension}')
+    client.load_extension(f'cogs.{extension}')
+    await ctx.send('File "' + extension + '" reloaded')
 
 
 @client.command()
 async def prefix(ctx, pre):
-    #client = commands.Bot(command_prefix= pre)
-    await ctx.send('Successfully changed the prefix to "' + pre + '"') #doesn't change the prefix yet, just the message for now
+    #client = commands.Bot(command_prefix = pre)
+    await ctx.send('Successfully changed the prefix to " ' + pre + ' " (not really though )') #doesn't change the prefix yet, just the message for now
 
 
 @client.command()
@@ -78,4 +84,9 @@ async def _8ball(ctx, *, question):
     await ctx.send(f'Question: ' + question + '\n' + random.choice(responses))
 
 
-client.run(TOKEN)
+for filename in os.listdir('./cogs'):
+    if filename.endswith('.py'):
+        client.load_extension(f'cogs.{filename[:-3]}')
+
+
+client.run('INSERT TOKEN HERE')
