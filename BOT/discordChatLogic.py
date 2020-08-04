@@ -14,11 +14,11 @@ client = commands.Bot(command_prefix='-')
 spell = SpellChecker()
 
 # Import input arrays
-with open('wordData.json') as json_file:
+with open('cogs/wordData.json') as json_file:
     wordData = json.load(json_file)
 
 # Import response dictionary
-with open('responseData.json') as json_file:
+with open('cogs/responseData.json') as json_file:
     responses = json.load(json_file)
 
 
@@ -42,7 +42,7 @@ def defineword(data):
         wrd = input("What word would you like to define?").lower()
         means = spell.correction(input("Is that word positive or negative?").lower())
         wordData.append([wrd, means])
-        with open('wordData.json', 'w') as outfile:
+        with open('cogs/wordData.json', 'w') as outfile:
             json.dump(data, outfile, indent=4)
     elif 'n' in yesno:
         return

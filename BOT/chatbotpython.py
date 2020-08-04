@@ -6,7 +6,7 @@ import random
 
 
 #load_dotenv() [for when we use gitignore]
-TOKEN = 'Insert Token here'
+TOKEN = 'TOKEN'
 client = commands.Bot(command_prefix = '-')
 
 
@@ -36,17 +36,12 @@ async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     await ctx.send('File "' + extension + '" unloaded')
 
+
 @client.command()
 async def reload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     client.load_extension(f'cogs.{extension}')
     await ctx.send('File "' + extension + '" reloaded')
-
-
-@client.command()
-async def prefix(ctx, pre):
-    #client = commands.Bot(command_prefix = pre)
-    await ctx.send('Successfully changed the prefix to " ' + pre + ' " (not really though )') #doesn't change the prefix yet, just the message for now
 
 
 @client.command()
@@ -87,6 +82,8 @@ async def _8ball(ctx, *, question):
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
+    else:
+        break
 
 
-client.run('INSERT TOKEN HERE')
+client.run(TOKEN)
