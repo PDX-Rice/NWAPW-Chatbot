@@ -8,7 +8,7 @@ class Chat(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=["bruh"])
+    @commands.command(aliases=["yo"])
     async def hello(self, ctx):
         greetings = ["hey!", "hi!",
                     "hello!", "yo!",
