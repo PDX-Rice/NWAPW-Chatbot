@@ -6,11 +6,11 @@ import random
 spell = SpellChecker()
 
 # Import input arrays
-with open('wordData.json') as json_file:
+with open('../wordData.json') as json_file:
     wordData = json.load(json_file)
 
 # Import response dictionary
-with open('responseData.json') as json_file:
+with open('../responseData.json') as json_file:
     responses = json.load(json_file)
 
 
@@ -34,40 +34,60 @@ def defineword(data):
         wrd = input("What word would you like to define?").lower()
         means = spell.correction(input("Is that word positive or negative?").lower())
         wordData.append([wrd, means])
-        with open('wordData.json', 'w') as outfile:
+        with open('../wordData.json', 'w') as outfile:
             json.dump(data, outfile, indent=4)
     elif 'n' in yesno:
         return
     else:
         defineword(data)
 
+def main():
+    # Conversation loops until interrupted by user
+    firstLoop = True
+    running = True
+    while running:
+        understands = False
+        phrase = ''
+        # Checks if it's the first loop to say hello or not
+        if firstLoop:
+            phrase = input(random.choice(responses['greetings']) + ", how are you doing?").lower().split()
+            firstLoop = False
+        else:
+            phrase = input("How are you doing?").lower().split()
 
-# Conversation loops until interrupted by user
-firstLoop = True
-running = True
-while running:
-    understands = False
-    phrase = ''
-    # Checks if it's the first loop to say hello or not
-    if firstLoop:
-        phrase = input(random.choice(responses['greetings']) + ", how are you doing?").lower().split()
-        firstLoop = False
-    else:
-        phrase = input("How are you doing?").lower().split()
-    
+        for word in phrase:
+            word = spell.correction(word)
+            meaning = findworddef(word, wordData)
+            if meaning != '':
+                understands = True
+                # print(word + " = " + meaning)
+                if meaning == 'positive':
+                    print("That's " + random.choice(responses['positive']) + " to hear!")
+                elif meaning == 'negative':
+                    print("That's " + random.choice(responses['negative']) + " to hear, I'm sorry about that.")
+                elif meaning == 'ending':
+                    print(random.choice(responses['closings']))
+                    running = False
+                    break
+        if not understands:
+            defineword(wordData)
+
+if __name__=="__main__":
+    main()
+
+#instead of taking console input, take input from tkinter
+def conversation(enteredtext):
+    phrase = enteredtext.lower().split()
     for word in phrase:
         word = spell.correction(word)
         meaning = findworddef(word, wordData)
         if meaning != '':
-            understands = True
             # print(word + " = " + meaning)
             if meaning == 'positive':
                 print("That's " + random.choice(responses['positive']) + " to hear!")
+                print("how are you")
             elif meaning == 'negative':
                 print("That's " + random.choice(responses['negative']) + " to hear, I'm sorry about that.")
+                print("how are you")
             elif meaning == 'ending':
                 print(random.choice(responses['closings']))
-                running = False
-                break
-    if not understands:
-        defineword(wordData)
