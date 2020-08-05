@@ -4,28 +4,16 @@ import json
 from spellchecker import SpellChecker
 import random
 
-#setup
-root=Tk()
-root.title("chatbot")
-root.configure(background = "#121212")
-label = Label(root, text="say something to the chatbot", bg = "#121212", fg = "#7c7c7c", font = "helvetica")
-label.grid(row = 0, padx = 2, pady = 2)
-textbox=Text(root)
-textbox.configure(background = "#272727", fg = "#f1f1f1", borderwidth = 0, highlightthickness = 0, font = "helvetica")
-textbox.tag_configure("tag-right", justify = "right")
-textbox.grid(row = 1, padx = 2, pady = 2)
-
 # Sets up spellchecker
 spell = SpellChecker()
 
 # Import input arrays
-with open('./wordData.json') as json_file:
+with open('../wordData.json') as json_file:
     wordData = json.load(json_file)
 
 # Import response dictionary
-with open('./responseData.json') as json_file:
+with open('../responseData.json') as json_file:
     responses = json.load(json_file)
-
 
 # Searches knowledge arrays for word and returns logged meaning tag
 def findworddef(wrd, data):
@@ -41,25 +29,20 @@ def findworddef(wrd, data):
 # Adds a new word to knowledge arrays and saves the addition to JSON file
 # Needs to be reworked to accept edgecases
 def defineword(data):
-    yesno = input("I didn't recognize an adjective in your response,"
-                  " would you like to add a word to my knowledgebase?").lower()
-    if 'y' in yesno:
-        wrd = input("What word would you like to define?").lower()
-        means = spell.correction(input("Is that word positive or negative?").lower())
-        wordData.append([wrd, means])
-        with open('../wordData.json', 'w') as outfile:
-            json.dump(data, outfile, indent=4)
-    elif 'n' in yesno:
-        return
-    else:
-        defineword(data)
-#instead of taking console input, take input from tkinter
+    print("I didn't recognize an adjective in your response." + "\n" +
+          "You can add new phrases with the 'add' button!")
+    addMenu() #open the window to add phrases
+
+
+# instead of taking console input, take input from tkinter
 def conversation(enteredtext):
+    understands = False
     phrase = enteredtext.lower().split()
     for word in phrase:
         word = spell.correction(word)
         meaning = findworddef(word, wordData)
         if meaning != '':
+            understands = True
             # print(word + " = " + meaning)
             if meaning == 'positive':
                 print("That's " + random.choice(responses['positive']) + " to hear!")
@@ -69,47 +52,131 @@ def conversation(enteredtext):
                 print("how are you")
             elif meaning == 'ending':
                 print(random.choice(responses['closings']))
+    if not understands:
+        defineword(wordData)
 
-#gets input and displays a response
+
+# gets input and displays a response
 def enterClick():
     enteredtext = textentry.get()
-    textbox.insert(END, enteredtext, "tag-right")    #dock text to right
+    textbox.insert(END, enteredtext, "tag-right")  # dock text to right
 
     print("\n")
     displayOutput(enteredtext)
     textentry.delete(0, END)  # clear
-    textbox.see("end") #scroll to end
+    textbox.see("end")  # scroll to end
 
-#enter key works as enter button
-def enterKey(event): #bind takes one arguement
+
+# enter key works as enter button
+def enterKey(event):  # bind takes one arguement
     enterClick()
+
 
 def displayOutput(enteredtext):
     conversation(enteredtext)
 
-#redirect console output (print) to tkinter
+
+# redirect console output (print) to tkinter
 def redirectOutput(inputStr):
     textbox.insert(END, inputStr)
 
-#redirect tkinter input to console input
+
+# redirect tkinter input to console input
 def redirectInput():
     pass
 
-#creates second help menu window
+
+# creates second help menu window
 def helpMenu():
     helpWindow = Toplevel()  # creates new window
     helpWindow.geometry("250x150")
     helpWindow.title("help menu")
     helpLabel = Label(helpWindow, text="helpful links!")
-    helpLabel.grid(row = 0)
+    helpLabel.grid(row=0)
     # opens the link the Github
     githubLink = Label(helpWindow, text="take me to Github!", fg="blue", cursor="hand2")
-    githubLink.grid(row = 1)
+    githubLink.grid(row=1)
     githubLink.bind("<Button-1>", lambda e: callback("https://github.com/PDX-Rice/NWAPW-Chatbot"))
 
-#open url in browser
+def addMenu():
+    #register word as positive
+    def positivePressed(event):
+        if addEntry.get() != "": #if not empty
+            phrase = spell.correction(addEntry.get())
+            means = "positive"
+            wordData.append([phrase, means])
+            with open('../wordData.json', 'w') as outfile:
+                json.dump(wordData, outfile, indent=4)
+            message.insert(END, phrase +" was registered as a positive phrase!" + "\n")
+        else:
+            message.insert(END, "You must enter something " + "\n")
+
+    def negativePressed(event):
+        if addEntry.get() != "":  # if not empty
+            phrase = spell.correction(addEntry.get())
+            means = "negative"
+            wordData.append([phrase, means])
+            with open('../wordData.json', 'w') as outfile:
+                json.dump(wordData, outfile, indent=4)
+            message.insert(END, phrase + " was registered as a negative phrase!" + "\n")
+        else:
+            message.insert(END, "You must enter something " + "\n")
+
+    #setup toplevel
+    addWindow = Toplevel()
+    addWindow.geometry("250x150")
+    addWindow.title("add phrases")
+    #label
+    addLabel = Label(addWindow, text = "What phrase would you like to define? ")
+    addLabel.grid(row = 0)
+    #phrase entry
+    addEntry = Entry(addWindow, width=20, bg="white", background="#272727", fg="#f1f1f1", font="Helvetica", borderwidth=0,
+                      highlightthickness=0)
+    addEntry.grid(row=1)
+    addEntry.focus()
+    #label 2
+    addLabel2 = Label(addWindow, text = "Is that word positive or negative? ")
+    addLabel2.grid(row=2)
+    #define radio buttons
+    defineVar = StringVar()
+    defineVar.set('') #none selected
+    positiveButton = Radiobutton(addWindow, text = "positive", value = "positive", variable = defineVar)
+    positiveButton.grid(row = 4)
+    positiveButton.bind('<ButtonRelease-1>', positivePressed) #when selected
+    negativeButton = Radiobutton(addWindow, text = "negative", value = "negative", variable = defineVar)
+    negativeButton.grid(row =5)
+    negativeButton.bind('<ButtonRelease-1>', negativePressed) #when selected
+
+
+    #define entry
+    #addEntry2 = Entry(addWindow, width=20, bg="white", background="#272727", fg="#f1f1f1", font="Helvetica",
+                     #borderwidth=0,
+                     #highlightthickness=0)
+    #addEntry2.grid(row=3)
+    # message output box
+    message = Text(addWindow)
+    message.configure(width=20, font="helvetica")
+    message.grid(row=7)
+    #submit button
+    #submitButton = Button(addWindow, text='submit', command=submit(message), background="#9DA9F8", fg="#272727", borderwidth=0, highlightthickness=0)
+    #submitButton.grid(row = 4)
+
+
+
+# open url in browser
 def callback(url):
     webbrowser.open_new(url)
+
+#setup
+root=Tk()
+root.title("chatbot")
+root.configure(background = "#121212")
+label = Label(root, text="say something to the chatbot", bg = "#121212", fg = "#7c7c7c", font = "helvetica")
+label.grid(row = 0, padx = 2, pady = 2)
+textbox=Text(root)
+textbox.configure(background = "#272727", fg = "#f1f1f1", borderwidth = 0, highlightthickness = 0, font = "helvetica")
+textbox.tag_configure("tag-right", justify = "right")
+textbox.grid(row = 1, padx = 2, pady = 2)
 
 
 #enter button
@@ -120,15 +187,24 @@ enterButton.grid(row = 3)
 #entry area (user input)
 textentry = Entry(root, width = 20, bg = "white", background = "#272727", fg = "#f1f1f1", font = "Helvetica" ,borderwidth = 0, highlightthickness = 0)
 textentry.grid(row = 4)
+textentry.focus() #automatically set focus to entry
 #help button
 helpButton = Button(root, text ='help', command = helpMenu, background = "#9DA9F8", fg = "#272727" ,borderwidth = 0, highlightthickness = 0)
 helpButton.grid(row = 5)
+#add button
+addButton = Button(root, text ='add', command = addMenu, background = "#9DA9F8", fg = "#272727" ,borderwidth = 0, highlightthickness = 0)
+addButton.grid(row = 6)
 
-#redirect print (output) lines
-sys.stdout.write = redirectOutput #whenever sys.stdout.write is called, redirector is called.
+#main
+def main():
+    #redirect print (output) lines
+    sys.stdout.write = redirectOutput #whenever sys.stdout.write is called, redirector is called
 
-#on startup do this stuff
-print(random.choice(responses['greetings']))
-print("how are you")
+    #on startup do this stuff
+    print(random.choice(responses['greetings']))
+    print("how are you")
 
-root.mainloop()
+    root.mainloop()
+
+if __name__=="__main__":
+    main()
