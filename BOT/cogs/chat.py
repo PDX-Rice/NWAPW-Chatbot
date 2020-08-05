@@ -1,11 +1,10 @@
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
 import json
 from spellchecker import SpellChecker
 import random
 
-load_dotenv()
+#load_dotenv()
 TOKEN = 'TOKEN'
 client = commands.Bot(command_prefix='-')
 
