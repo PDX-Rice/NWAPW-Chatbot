@@ -1,11 +1,9 @@
 import os
 import discord
 from discord.ext import commands
-#from dotenv import load_dotenv [for when we use gitignore]
 import random
 
 
-#load_dotenv() [for when we use gitignore]
 TOKEN = 'TOKEN'
 client = commands.Bot(command_prefix = '-')
 
