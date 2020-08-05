@@ -4,12 +4,6 @@ import json
 from spellchecker import SpellChecker
 import random
 
-# Imports bot token and prefix
-with open('config.json') as json_file:
-    configData = json.load(json_file)
-TOKEN = configData['token']
-client = commands.Bot(command_prefix=configData['prefix'])
-
 # Sets up spellchecker
 spell = SpellChecker()
 
@@ -56,10 +50,37 @@ class Chat(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-
-    @commands.command(aliases = ["hey", "hi", "yo", "wassup"])
+    @commands.command()
     async def hello(self, ctx):
+        # def check(m):
+        #     return m.author == member and m.channel == ctx.channel
+
         await ctx.send(random.choice(responses['greetings']).capitalize() + "!")
+        # Conversation loops until interrupted by user
+        running = True
+        while running:
+            await ctx.send("How are you?")
+            understands = False
+            # Checks if it's the first loop to say hello or not
+            msg = await self.client.wait_for('message')
+            if msg != '':
+                await ctx.send("Here")
+            # for word in msg:
+            #     word = spell.correction(word)
+            #     meaning = findworddef(word, wordData)
+            #     if meaning != '':
+            #         understands = True
+            #         # print(word + " = " + meaning)
+            #         if meaning == 'positive':
+            #             await ctx.send("That's " + random.choice(responses['positive']) + " to hear!")
+            #         elif meaning == 'negative':
+            #             await ctx.send("That's " + random.choice(responses['negative']) + " to hear, I'm sorry about that.")
+            #         elif meaning == 'ending':
+            #             await ctx.send(random.choice(responses['closings']))
+            #             running = False
+            #             break
+            if not understands:
+                defineword(wordData)
 
 
 def setup(client):
