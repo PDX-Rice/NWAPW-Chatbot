@@ -50,17 +50,18 @@ def defineword(data):
         defineword(data)
 
 
-#creates an event for "chatting"
+#creates a command for "chatting"
 class Chat(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
 
-    @commands.command(aliases=responses['greetings'])
+    @commands.command()
     async def hello(self, ctx):
         await ctx.send(random.choice(responses['greetings']).title() + "!")
 
 
 def setup(client):
     client.add_cog(Chat(client))
+    pass
