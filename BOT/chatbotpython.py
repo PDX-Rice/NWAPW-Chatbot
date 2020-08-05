@@ -79,12 +79,13 @@ async def _8ball(ctx, *, question):
                  "Very doubtful."]
     await ctx.send(f'Question: ' + question + '\n' + random.choice(responses))
 
-#
-# for filename in os.listdir('./cogs'):
-#     if filename.endswith('.py'):
-#         client.load_extension(f'cogs.{filename[:-3]}')
-#     else:
-#         break
+
+for filename in os.listdir('./cogs'):
+    print(f'Loading python cog {filename}')
+    if filename.endswith('.py'):
+        client.load_extension(f'cogs.{filename[:-3]}')
+    else:
+        break
 
 
 client.run(TOKEN)
