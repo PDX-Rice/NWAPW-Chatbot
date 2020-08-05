@@ -1,13 +1,14 @@
 import os
 import discord
 from discord.ext import commands
-#from dotenv import load_dotenv [for when we use gitignore]
+import json
 import random
 
-
-#load_dotenv() [for when we use gitignore]
-TOKEN = 'TOKEN'
-client = commands.Bot(command_prefix = '-')
+# Imports bot token and prefix
+with open('config.json') as json_file:
+    configData = json.load(json_file)
+TOKEN = configData['token']
+client = commands.Bot(command_prefix=configData['prefix'])
 
 
 @client.event
@@ -78,12 +79,12 @@ async def _8ball(ctx, *, question):
                  "Very doubtful."]
     await ctx.send(f'Question: ' + question + '\n' + random.choice(responses))
 
-
-for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-        client.load_extension(f'cogs.{filename[:-3]}')
-    else:
-        break
+#
+# for filename in os.listdir('./cogs'):
+#     if filename.endswith('.py'):
+#         client.load_extension(f'cogs.{filename[:-3]}')
+#     else:
+#         break
 
 
 client.run(TOKEN)
