@@ -52,8 +52,8 @@ class Chat(commands.Cog):
 
     @commands.command()
     async def hello(self, ctx):
-        # def check(m):
-        #     return m.author == member and m.channel == ctx.channel
+        #def check(m):
+            #return m.author == member and m.channel == ctx.channel
 
         await ctx.send(random.choice(responses['greetings']).capitalize() + "!")
         # Conversation loops until interrupted by user
@@ -62,9 +62,12 @@ class Chat(commands.Cog):
             await ctx.send("How are you?")
             understands = False
             # Checks if it's the first loop to say hello or not
+            #def check(m):
+                #return m.author == member and m.channel == ctx.channel
             msg = await self.client.wait_for('message')
             if msg != '':
-                await ctx.send("Here")
+                await ctx.send(msg.author)
+                understands = True
             # for word in msg:
             #     word = spell.correction(word)
             #     meaning = findworddef(word, wordData)
