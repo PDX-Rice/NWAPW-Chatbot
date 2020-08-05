@@ -57,11 +57,10 @@ class Chat(commands.Cog):
         self.client = client
 
 
-    @commands.command()
+    @commands.command(aliases = ["hey", "hi", "yo", "wassup"])
     async def hello(self, ctx):
-        await ctx.send(random.choice(responses['greetings']).title() + "!")
+        await ctx.send(random.choice(responses['greetings']).capitalize() + "!")
 
 
 def setup(client):
     client.add_cog(Chat(client))
-    pass
