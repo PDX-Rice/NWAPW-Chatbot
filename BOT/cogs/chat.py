@@ -50,7 +50,7 @@ class Chat(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.command(aliases = ["hey"])
     async def hello(self, ctx):
         #def check(m):
             #return m.author == member and m.channel == ctx.channel
@@ -66,24 +66,29 @@ class Chat(commands.Cog):
                 #return m.author == member and m.channel == ctx.channel
             msg = await self.client.wait_for('message')
             if msg != '':
-                await ctx.send(msg.author)
-                understands = True
-            # for word in msg:
-            #     word = spell.correction(word)
-            #     meaning = findworddef(word, wordData)
-            #     if meaning != '':
-            #         understands = True
-            #         # print(word + " = " + meaning)
-            #         if meaning == 'positive':
-            #             await ctx.send("That's " + random.choice(responses['positive']) + " to hear!")
-            #         elif meaning == 'negative':
-            #             await ctx.send("That's " + random.choice(responses['negative']) + " to hear, I'm sorry about that.")
-            #         elif meaning == 'ending':
-            #             await ctx.send(random.choice(responses['closings']))
-            #             running = False
-            #             break
+                if(msg.author == self.client.user):
+                    running = False
+                    break
+                await ctx.send(f'{msg.author} said {msg.content}')
+                msg = (msg.content).split()
+                for word in msg:
+                    #word = spell.correction(word)
+                    meaning = findworddef(word, wordData)
+                    if meaning != '':
+                        understands = True
+                        print(word + " = " + meaning)
+                        if meaning == 'positive':
+                            await ctx.send("That's " + random.choice(responses['positive']) + " to hear!")
+                        elif meaning == 'negative':
+                            await ctx.send("That's " + random.choice(responses['negative']) + " to hear, I'm sorry about that.")
+                        elif meaning == 'ending':
+                            await ctx.send(random.choice(responses['closings']).capitalize() + "!")
+                            running = False
+                            break
             if not understands:
-                defineword(wordData)
+                #defineword(wordData)
+                await ctx.send("Sorry, I didn't quite get that. " + random.choice(responses['closings']).capitalize() + "!")
+                running = False
 
 
 def setup(client):
