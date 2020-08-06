@@ -102,16 +102,25 @@ class Chat(commands.Cog):
                 await ctx.send("I didn't recognize an adjective in your response,"
                                " would you like to add a word to my knowledgebase?")
                 msg = await self.client.wait_for('message')
-                if msg.content.lower() == "yes":
-                    await ctx.send("What word would you like to define? (Pick 1 word)")
+                if (msg.content).lower() == "yes":
+                    await ctx.send("What word would you like to define?")
                     wrd = await self.client.wait_for('message')
                     await ctx.send("Is that word positive or negative?")
                     means = await self.client.wait_for('message')
-                    wordData.append([wrd.content.lower(), means.conetent.lower()])
+                    wordData.append([(wrd.content).lower(), (means.content).lower()])
+                    #with open('../wordData.json', 'w') as outfile:
+                        #json.dump(wordData, outfile, indent=4)
+                    embed = discord.Embed(colour=discord.Colour.green(),
+                    title = "New Word!",
+                    description = f'Succesfully added a new word to my knowledgebase. I will now understand when someone inputs the word {wrd}')
+
+                    #embed.set_thumbnail(url = "https://www.google.com/search?safe=strict&tbs=simg:CAQSowIJXTb0RMT228AalwILELCMpwgaYQpfCAMSJ70BvwHBA8oBywG-ASO8AcEByQGCNIY0-DOYPYknliCQNLcn5DblNhowGvTCANmUSBZubQnJuuAz929yTHST7RkYs-d_18n-diKJ9yeinUje75vMqWynyi8G9IAQMCxCOrv4IGgoKCAgBEgTQURY5DAsQne3BCRqQAQofCgxpbGx1c3RyYXRpb27apYj2AwsKCS9tLzAxa3I4ZgoWCgRpcG9k2qWI9gMKCggvbS8wbWN4MgoZCgdwbGFzdGlj2qWI9gMKCggvbS8wNXo4NwofCgxpbnB1dCBkZXZpY2XapYj2AwsKCS9tLzAyZHdnYgoZCgdiYXR0ZXJ52qWI9gMKCggvbS8wMWMwegw&sxsrf=ALeKk03JNWGr1FH-pu2XH5FuL1EY_cy49w:1596741124673&q=chatbot+qna&tbm=isch&sa=X&ved=2ahUKEwj15KKcpIfrAhWWFjQIHZ0wAOUQwg4oAHoECAkQKQ")
+                    await ctx.send(embed = embed)
                 else:
                     await ctx.send("Alright then, " + random.choice(responses['closings']).capitalize() + "!")
                     running = False
                     break
+
 
 
 def setup(client):
