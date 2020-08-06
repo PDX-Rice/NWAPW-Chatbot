@@ -1,0 +1,14 @@
+.jumbotron {
+  background-color: DarkGray;
+}
+body {
+  background-color: LightGray;
+}
+
+.jumbotron a {
+  color: #111;
+}
+
+nav a {
+  color: #111;
+}
