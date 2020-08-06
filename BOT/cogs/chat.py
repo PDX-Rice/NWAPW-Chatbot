@@ -8,8 +8,98 @@ import random
 spell = SpellChecker()
 
 # Import input arrays
-with open('../wordData.json') as json_file:
-    wordData = json.load(json_file)
+# with open('../wordData.json') as json_file:
+#     wordData = json.load(json_file)
+wordData = [
+    [
+        "good",
+        "positive"
+    ],
+    [
+        "well",
+        "positive"
+    ],
+    [
+        "great",
+        "positive"
+    ],
+    [
+        "fantastic",
+        "positive"
+    ],
+    [
+        ":)",
+        "positive"
+    ],
+    [
+        "(:",
+        "positive"
+    ],
+    [
+        "amazing",
+        "positive"
+    ],
+    [
+        "awesome",
+        "positive"
+    ],
+    [
+        "happy",
+        "positive"
+    ],
+    [
+        "bad",
+        "negative"
+    ],
+    [
+        "terrible",
+        "negative"
+    ],
+    [
+        "tired",
+        "negative"
+    ],
+    [
+        "stressed",
+        "negative"
+    ],
+    [
+        ":(",
+        "negative"
+    ],
+    [
+        "):",
+        "negative"
+    ],
+    [
+        "upset",
+        "negative"
+    ],
+    [
+        "bye",
+        "ending"
+    ],
+    [
+        "goodbye",
+        "ending"
+    ],
+    [
+        "fairwell",
+        "ending"
+    ],
+    [
+        "fair well",
+        "ending"
+    ],
+    [
+        "fair-well",
+        "ending"
+    ],
+    [
+        "gtg",
+        "ending"
+    ]
+]
 
 # Import response dictionary
 with open('../responseData.json') as json_file:
@@ -81,7 +171,7 @@ class Chat(commands.Cog):
                     word = spell.correction(word)
                     meaning = findworddef(word, wordData)
                     if 'y' in word or word == 'sure':
-                        await ctx.send(random.choice(responses['positive']) + ", let's hear it.")
+                        await ctx.send(random.choice(responses['positive']).capitalize() + ", let's hear it.")
                         msg = await self.client.wait_for('message')
                         if userMood == 'positive':
                             await ctx.send("That sounds like a " + random.choice(responses['positive']) + " day,"
@@ -107,7 +197,7 @@ class Chat(commands.Cog):
                     wrd = await self.client.wait_for('message')
                     await ctx.send("Is that word positive or negative?")
                     means = await self.client.wait_for('message')
-                    wordData.append([(wrd.content).lower(), (means.content).lower()])
+                    wordData.append([wrd.content.lower(), means.content.lower()])
                     #with open('../wordData.json', 'w') as outfile:
                         #json.dump(wordData, outfile, indent=4)
                     embed = discord.Embed(colour=discord.Colour.green(),
@@ -120,7 +210,6 @@ class Chat(commands.Cog):
                     await ctx.send("Alright then, " + random.choice(responses['closings']).capitalize() + "!")
                     running = False
                     break
-
 
 
 def setup(client):
