@@ -65,7 +65,8 @@ class Chat(commands.Cog):
             userMood = ''
             msg = await self.client.wait_for('message')
             if msg != '':
-                if msg.author == self.client.user:
+                if(msg.author == self.client.user):
+                    print('Bot tried talking to istelf...')
                     running = False
                     break
                 # await ctx.send(f'{msg.author} said {msg.content}')  # Repeats what user said back to user
@@ -85,6 +86,23 @@ class Chat(commands.Cog):
                             await ctx.send("That's " + random.choice(responses['positive']) + " to hear!")
                         elif meaning == 'negative':
                             await ctx.send("That's " + random.choice(responses['negative']) + " to hear, I'm sorry about that.")
+                        elif meaning == 'ending':
+                            await ctx.send(random.choice(responses['closings']).capitalize() + "!")
+                            running = False
+                            break
+            if not understands:
+                await ctx.send("I didn't recognize an adjective in your response,"
+                        " would you like to add a word to my knowledgebase?")
+                msg = await self.client.wait_for('message')
+                if (msg.content).lower() == "yes":
+                    await ctx.send("What word would you like to define? (Pick 1 word)")
+                    wrd = await self.client.wait_for('message')
+                    await ctx.send("Is that word positive or negative?")
+                    means = await self.client.wait_for('message')
+                    wordData.append([(wrd.content).lower(), (means.conetent).lower()])
+                else:
+                    await ctx.send("Alright then, " + random.choice(responses['closings']).capitalize() + "!")
+                    running = False
                         break
             if understands:
                 await ctx.send("Would you like to tell me more about your day?")
@@ -107,12 +125,21 @@ class Chat(commands.Cog):
                         await  ctx.send("Ok, in that case I'm gonna leave, " + random.choice(responses['closings']) + "!")
                     else:
                         break
-            elif not understands:
-                #defineword(wordData)
-                await ctx.send("Sorry, I didn't quite get that. " + random.choice(responses['closings']).capitalize() + "!")
-                running = False
+            if not understands:
+                await ctx.send("I didn't recognize an adjective in your response,"
+                        " would you like to add a word to my knowledgebase?")
+                msg = await self.client.wait_for('message')
+                if (msg.content).lower() == "yes":
+                    await ctx.send("What word would you like to define? (Pick 1 word)")
+                    wrd = await self.client.wait_for('message')
+                    await ctx.send("Is that word positive or negative?")
+                    means = await self.client.wait_for('message')
+                    wordData.append([(wrd.content).lower(), (means.conetent).lower()])
+                else:
+                    await ctx.send("Alright then, " + random.choice(responses['closings']).capitalize() + "!")
+                    running = False
 
 
 
-def setup(client):
-    client.add_cog(Chat(client))
+    def setup(client):
+        client.add_cog(Chat(client))
