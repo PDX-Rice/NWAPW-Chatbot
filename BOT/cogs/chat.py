@@ -53,14 +53,14 @@ class Chat(commands.Cog):
     @commands.command(aliases = ["hey"])
     async def hello(self, ctx):
 
-        await ctx.send(random.choice(responses['greetings']).capitalize() + "!")
+        # await ctx.send(random.choice(responses['greetings']).capitalize() + "!")
         # Conversation loops until interrupted by user
         firstLoop = True
         running = True
         while running:
             # Checks if it's the first loop to say hello or not
             if firstLoop:
-                await ctx.send(random.choice(responses['greetings']) + " how are you?")
+                await ctx.send(random.choice(responses['greetings']).capitalized() + " how are you?")
             understands = False
             userMood = ''
             msg = await self.client.wait_for('message')
@@ -68,7 +68,7 @@ class Chat(commands.Cog):
                 if msg.author == self.client.user:
                     running = False
                     break
-                await ctx.send(f'{msg.author} said {msg.content}')  # Repeats what user said back to user
+                # await ctx.send(f'{msg.author} said {msg.content}')  # Repeats what user said back to user
                 msg = msg.content.lower().split()
                 for word in msg:
                     word = spell.correction(word)
@@ -102,7 +102,7 @@ class Chat(commands.Cog):
                         elif userMood == 'negative':
                             await ctx.send("That sounds " + random.choice(responses['negative']) + ". I hope your day get's better,"
                             " but it was " + random.choice(responses['positive']) + " talking to you, " + random.choice(responses['closings']) + "!")
-
+                        break
                     elif meaning == 'no':
                         await  ctx.send("Ok, in that case I'm gonna leave, " + random.choice(responses['closings']) + "!")
                     else:
