@@ -67,12 +67,13 @@ class Chat(commands.Cog):
             msg = await self.client.wait_for('message')
             if msg != '':
                 if(msg.author == self.client.user):
+                    print('Bot tried talking to istelf...')
                     running = False
                     break
                 await ctx.send(f'{msg.author} said {msg.content}')
-                msg = (msg.content).split()
+                msg = ((msg.content).lower()).split()
                 for word in msg:
-                    #word = spell.correction(word)
+                    word = spell.correction(word)
                     meaning = findworddef(word, wordData)
                     if meaning != '':
                         understands = True
@@ -86,9 +87,18 @@ class Chat(commands.Cog):
                             running = False
                             break
             if not understands:
-                #defineword(wordData)
-                await ctx.send("Sorry, I didn't quite get that. " + random.choice(responses['closings']).capitalize() + "!")
-                running = False
+                await ctx.send("I didn't recognize an adjective in your response,"
+                        " would you like to add a word to my knowledgebase?")
+                msg = await self.client.wait_for('message')
+                if (msg.content).lower() == "yes":
+                    await ctx.send("What word would you like to define? (Pick 1 word)")
+                    wrd = await self.client.wait_for('message')
+                    await ctx.send("Is that word positive or negative?")
+                    means = await self.client.wait_for('message')
+                    wordData.append([(wrd.content).lower(), (means.conetent).lower()])
+                else:
+                    await ctx.send("Alright then, " + random.choice(responses['closings']).capitalize() + "!")
+                    running = False
 
 
 def setup(client):
