@@ -52,32 +52,36 @@ class Chat(commands.Cog):
 
     @commands.command(aliases = ["hey"])
     async def hello(self, ctx):
-        #def check(m):
-            #return m.author == member and m.channel == ctx.channel
 
         await ctx.send(random.choice(responses['greetings']).capitalize() + "!")
         # Conversation loops until interrupted by user
+        firstLoop = True
         running = True
         while running:
-            await ctx.send("How are you?")
-            understands = False
             # Checks if it's the first loop to say hello or not
-            #def check(m):
-                #return m.author == member and m.channel == ctx.channel
+            if firstLoop:
+                await ctx.send(random.choice(responses['greetings']) + " how are you?")
+            understands = False
+            userMood = ''
             msg = await self.client.wait_for('message')
             if msg != '':
                 if(msg.author == self.client.user):
                     print('Bot tried talking to istelf...')
                     running = False
                     break
-                await ctx.send(f'{msg.author} said {msg.content}')
+                await ctx.send(f'{msg.author} said {msg.content}')# Repeats what user said back to user
                 msg = ((msg.content).lower()).split()
                 for word in msg:
                     word = spell.correction(word)
                     meaning = findworddef(word, wordData)
-                    if meaning != '':
+                    if meaning == 'ending':
+                        await ctx.send(random.choice(responses['closings']).capitalize() + "!")
+                        running = False
+                        break
+                    elif meaning != '':
                         understands = True
                         print(word + " = " + meaning)
+                        userMood = meaning
                         if meaning == 'positive':
                             await ctx.send("That's " + random.choice(responses['positive']) + " to hear!")
                         elif meaning == 'negative':
@@ -99,7 +103,43 @@ class Chat(commands.Cog):
                 else:
                     await ctx.send("Alright then, " + random.choice(responses['closings']).capitalize() + "!")
                     running = False
+                        break
+            if understands:
+                await ctx.send("Would you like to tell me more about your day?")
+                msg = await self.client.wait_for('message')
+                msg = msg.content.lower().split()
+                for word in msg:
+                    word = spell.correction(word)
+                    meaning = findworddef(word, wordData)
+                    if meaning == 'yes':
+                        await ctx.send(random.choice(responses['positive']) + ", let's hear it.")
+                        msg = await self.client.wait_for('message')
+                        if userMood == 'positive':
+                            await ctx.send("That sounds like a " + random.choice(responses['positive']) + " day,"
+                            " it was " + random.choice(responses['positive']) + " talking to you, " + random.choice(responses['closings']) + "!")
+                        elif userMood == 'negative':
+                            await ctx.send("That sounds " + random.choice(responses['negative']) + ". I hope your day get's better,"
+                            " but it was " + random.choice(responses['positive']) + " talking to you, " + random.choice(responses['closings']) + "!")
+
+                    elif meaning == 'no':
+                        await  ctx.send("Ok, in that case I'm gonna leave, " + random.choice(responses['closings']) + "!")
+                    else:
+                        break
+            if not understands:
+                await ctx.send("I didn't recognize an adjective in your response,"
+                        " would you like to add a word to my knowledgebase?")
+                msg = await self.client.wait_for('message')
+                if (msg.content).lower() == "yes":
+                    await ctx.send("What word would you like to define? (Pick 1 word)")
+                    wrd = await self.client.wait_for('message')
+                    await ctx.send("Is that word positive or negative?")
+                    means = await self.client.wait_for('message')
+                    wordData.append([(wrd.content).lower(), (means.conetent).lower()])
+                else:
+                    await ctx.send("Alright then, " + random.choice(responses['closings']).capitalize() + "!")
+                    running = False
 
 
-def setup(client):
-    client.add_cog(Chat(client))
+
+    def setup(client):
+        client.add_cog(Chat(client))
