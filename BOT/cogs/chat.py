@@ -121,7 +121,5 @@ class Chat(commands.Cog):
                     running = False
                     break
 
-
-
 def setup(client):
     client.add_cog(Chat(client))
