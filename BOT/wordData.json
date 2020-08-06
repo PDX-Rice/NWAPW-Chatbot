@@ -82,5 +82,33 @@
     [
         "fair-well",
         "ending"
+    ],
+    [
+        "gtg",
+        "ending"
+    ],
+    [
+        "yes",
+        "yes"
+    ],
+    [
+        "y",
+        "yes"
+    ],
+    [
+        "sure",
+        "yes"
+    ],
+    [
+        "no",
+        "no"
+    ],
+    [
+        "n",
+        "no"
+    ],
+    [
+        "nah",
+        "no"
     ]
 ]
