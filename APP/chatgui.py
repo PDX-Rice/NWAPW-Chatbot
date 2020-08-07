@@ -3,6 +3,19 @@ import webbrowser
 import json
 from spellchecker import SpellChecker
 import random
+import requests
+from bs4 import BeautifulSoup
+
+#set up web scraping
+url = "https://www.worldometers.info/coronavirus/country/us/" #data source
+page = requests.get(url)
+soup = BeautifulSoup(page.content, 'html.parser')
+usa = soup.find("tr", class_ ="total_row_usa") #data for usa
+totalCases = list(usa.children)[3] #total cases in the usa
+newCases = list(usa.children)[5] #todays new cases
+totalDeaths = list(usa.children)[7] #total deaths
+covid = ["coronavirus", "covid 19", "19", "corona", "virus", "cases", "usa", "sick", "covid"] #covid related words
+
 
 # Sets up spellchecker
 spell = SpellChecker()
@@ -41,9 +54,10 @@ def conversation(enteredtext):
     for word in phrase:
         word = spell.correction(word)
         meaning = findworddef(word, wordData)
+        if word in covid: #if covid related term is entered
+            meaning = "covid"
         if meaning != '':
             understands = True
-            # print(word + " = " + meaning)
             if meaning == 'positive':
                 print("That's " + random.choice(responses['positive']) + " to hear!")
                 print("how are you")
@@ -52,6 +66,11 @@ def conversation(enteredtext):
                 print("how are you")
             elif meaning == 'ending':
                 print(random.choice(responses['closings']))
+            elif meaning == 'covid':
+                print("The USA has a total of " + totalCases.get_text() + " coronavirus cases right now.")
+                print(newCases.get_text() + " of them are new cases.")
+                print("There are " + totalDeaths.get_text() + " total deaths in the country.")
+                print("how are you")
     if not understands:
         defineword(wordData)
 
@@ -97,6 +116,9 @@ def helpMenu():
     githubLink = Label(helpWindow, text="take me to Github!", fg="blue", cursor="hand2")
     githubLink.grid(row=1)
     githubLink.bind("<Button-1>", lambda e: callback("https://github.com/PDX-Rice/NWAPW-Chatbot"))
+    websiteLink = Label(helpWindow, text="take me to the website!", fg="blue", cursor="hand2")
+    websiteLink.grid(row=2)
+    websiteLink.bind("<Button-1>", lambda e: callback("https://pdx-rice.github.io/NWAPW-Chatbot/"))
 
 def addMenu():
     #register word as positive
@@ -146,21 +168,10 @@ def addMenu():
     negativeButton = Radiobutton(addWindow, text = "negative", value = "negative", variable = defineVar)
     negativeButton.grid(row =5)
     negativeButton.bind('<ButtonRelease-1>', negativePressed) #when selected
-
-
-    #define entry
-    #addEntry2 = Entry(addWindow, width=20, bg="white", background="#272727", fg="#f1f1f1", font="Helvetica",
-                     #borderwidth=0,
-                     #highlightthickness=0)
-    #addEntry2.grid(row=3)
     # message output box
     message = Text(addWindow)
     message.configure(width=20, font="helvetica")
     message.grid(row=7)
-    #submit button
-    #submitButton = Button(addWindow, text='submit', command=submit(message), background="#9DA9F8", fg="#272727", borderwidth=0, highlightthickness=0)
-    #submitButton.grid(row = 4)
-
 
 
 # open url in browser
@@ -202,7 +213,7 @@ def main():
 
     #on startup do this stuff
     print(random.choice(responses['greetings']))
-    print("how are you")
+    print("how are you (or ask me about Covid cases!)")
 
     root.mainloop()
 
