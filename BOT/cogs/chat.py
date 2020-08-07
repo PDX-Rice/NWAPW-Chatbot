@@ -111,8 +111,8 @@ class Chat(commands.Cog):
                     #with open('../wordData.json', 'w') as outfile:
                         #json.dump(wordData, outfile, indent=4)
                     embed = discord.Embed(colour=discord.Colour.green(),
-                    title = "New Word!",
-                    description = f'Succesfully added a new word to my knowledgebase. I will now understand when someone inputs the word {wrd}')
+                    title = f'New Word!- {wrd.content}',
+                    description = f'Succesfully added a new word to my knowledgebase. I will now understand when someone inputs the word {wrd.content}')
 
                     #embed.set_thumbnail(url = "https://www.google.com/search?safe=strict&tbs=simg:CAQSowIJXTb0RMT228AalwILELCMpwgaYQpfCAMSJ70BvwHBA8oBywG-ASO8AcEByQGCNIY0-DOYPYknliCQNLcn5DblNhowGvTCANmUSBZubQnJuuAz929yTHST7RkYs-d_18n-diKJ9yeinUje75vMqWynyi8G9IAQMCxCOrv4IGgoKCAgBEgTQURY5DAsQne3BCRqQAQofCgxpbGx1c3RyYXRpb27apYj2AwsKCS9tLzAxa3I4ZgoWCgRpcG9k2qWI9gMKCggvbS8wbWN4MgoZCgdwbGFzdGlj2qWI9gMKCggvbS8wNXo4NwofCgxpbnB1dCBkZXZpY2XapYj2AwsKCS9tLzAyZHdnYgoZCgdiYXR0ZXJ52qWI9gMKCggvbS8wMWMwegw&sxsrf=ALeKk03JNWGr1FH-pu2XH5FuL1EY_cy49w:1596741124673&q=chatbot+qna&tbm=isch&sa=X&ved=2ahUKEwj15KKcpIfrAhWWFjQIHZ0wAOUQwg4oAHoECAkQKQ")
                     await ctx.send(embed = embed)
